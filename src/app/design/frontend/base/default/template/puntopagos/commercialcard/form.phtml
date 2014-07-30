@@ -1,0 +1,32 @@
+<?php
+//TODO Androb puntopagos add header here
+?>
+<?php
+
+/** @var $this Androb_Puntopagos_Block_Banktransfer_Form */
+/** @var $helper Androb_Puntopagos_Helper_Data */
+
+$_code = $this->getMethodCode();
+$options = $this->getAvailablePaymentOptions($_code);
+$helper = Mage::helper('puntopagos');
+?>
+
+<div id="payment_form_<?php echo $_code ?>" style="display:none">
+    <ul class="payment-list form-list puntopagos-options-list commerialcard-list">
+        <?php foreach ($options as $option): ?>
+            <li>
+                <input type="radio" id="<?php echo $_code ?>_payment_option_<?php echo $option['value'] ?>" class="validate-one-required-by-name" name="payment[payment_option]" value="<?php echo $option['value'] ?>"/>
+                <label for="<?php echo $_code ?>_payment_option_<?php echo $option['value'] ?>">
+                    <?php //TODO make configurable echo $this->__($option['label']) ?>
+                    <img src="<?php echo $option['icon_url'] ?>" alt="<?php echo $this->__($option['label']) ?>" title="<?php echo $this->__($option['label']) ?>">
+                </label>
+            </li>
+        <?php endforeach ?>
+    </ul>
+
+    <?php if ($helper->isSandboxMode()): ?>
+        <div style="margin-top: 30px;">
+            <i><?php echo $this->__('Sandbox Mode is active [this warning is not visible in production mode]') ?></i>
+        </div>
+    <?php endif ?>
+</div>

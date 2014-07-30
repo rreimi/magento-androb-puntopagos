@@ -1,0 +1,119 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Androb_Puntopagos>
+            <version>0.0.1</version>
+        </Androb_Puntopagos>
+    </modules>
+
+    <global>
+        <models>
+            <puntopagos>
+                <class>Androb_Puntopagos_Model</class>
+                <resourceModel>puntopagos_mysql4</resourceModel>
+            </puntopagos>
+
+            <puntopagos_mysql4>
+                <class>Androb_Puntopagos_Model_Mysql4</class>
+                <entities>
+                    <transaction>
+                        <table>pp_transaction</table>
+                    </transaction>
+                </entities>
+            </puntopagos_mysql4>
+        </models>
+
+        <helpers>
+            <puntopagos>
+                <class>Androb_Puntopagos_Helper</class>
+            </puntopagos>
+        </helpers>
+
+        <blocks>
+            <puntopagos>
+                <class>Androb_Puntopagos_Block</class>
+            </puntopagos>
+        </blocks>
+
+        <resources>
+            <androb_puntopagos_setup>
+                <setup>
+                    <module>Androb_Puntopagos</module>
+                </setup>
+            </androb_puntopagos_setup>
+        </resources>
+
+        <sales>
+            <order>
+                <!-- Statuses declaration -->
+                <statuses>
+                    <pending_puntopagos translate="label"><label>My Processing Status</label></pending_puntopagos>
+                </statuses>
+                <!-- Linking Status to a state -->
+                <states>
+                    <pending_payment>
+                        <statuses>
+                            <pending_puntopagos />
+                        </statuses>
+                    </pending_payment>
+                </states>
+            </order>
+        </sales>
+    </global>
+
+    <frontend>
+        <routers>
+            <puntopagos>
+                <use>standard</use>
+                <args>
+                    <module>Androb_Puntopagos</module>
+                    <frontName>puntopagos</frontName>
+                </args>
+            </puntopagos>
+        </routers>
+    </frontend>
+
+    <default>
+        <payment>
+            <!-- Use to handle global configuration of puntopagos -->
+            <puntopagos>
+                <active>0</active>
+                <sandbox_mode>1</sandbox_mode>
+                <key_id backend_model="adminhtml/system_config_backend_encrypted"/>
+                <key_secret backend_model="adminhtml/system_config_backend_encrypted"/>
+                <sandbox_url>http://sandbox.puntopagos.com</sandbox_url>
+                <production_url>https://www.puntopagos.com</production_url>
+                <icon_url>http://www.puntopagos.com/content</icon_url>
+                <order_status>pending</order_status>
+                <debug_mode>0</debug_mode>
+                <order_log>0</order_log>
+            </puntopagos>
+
+            <webpay>
+                <active>0</active>
+                <model>puntopagos/method_webpay</model>
+                <title>Tarjeta de Crédito / Red Compra</title>
+                <allowspecific>0</allowspecific>
+                <payment_action>Authorization</payment_action>
+                <order_status>pending_puntopagos</order_status>
+            </webpay>
+
+            <pp_commercial_card>
+                <active>0</active>
+                <model>puntopagos/method_commercialcard</model>
+                <title>Tarjeta de casas comerciales</title>
+                <allowspecific>0</allowspecific>
+                <payment_action>Authorization</payment_action>
+            </pp_commercial_card>
+
+            <pp_bank_transfer>
+                <active>0</active>
+                <model>puntopagos/method_banktransfer</model>
+                <title>Transferencia Bancaria</title>
+                <allowspecific>0</allowspecific>
+                <payment_action>Authorization</payment_action>
+            </pp_bank_transfer>
+        </payment>
+    </default>
+
+</config>

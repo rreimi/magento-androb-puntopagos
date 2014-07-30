@@ -1,0 +1,15 @@
+{
+    "name": "Androb/Puntopagos",
+    "license": "OSL-3.0",
+    "type": "magento-module",
+    "description": "Puntopagos payment gateway integration",
+    "require": {
+        "magento-hackathon/magento-composer-installer": "*"
+    },
+    "authors":[
+        {
+            "name":"Robert Reimi",
+            "email":"robert.reimi@gmail.com"
+        }
+    ]
+}
