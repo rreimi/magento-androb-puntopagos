@@ -4,14 +4,16 @@
  * User: rreimi
  * Date: 7/6/14
  * Time: 3:33 PM
- * 
- * 
+ *
+ *
  */
 
 abstract class Androb_Puntopagos_Block_PaymentForm extends Mage_Payment_Block_Form {
 
+    /** @var $optionSourceModel String - The model name used to fetch the payment options */
+    protected $_optionSourceModel;
 
-    public function getAvailablePaymentOptions($code) {
+    protected function getAvailablePaymentOptions($code) {
         /** @var Androb_Puntopagos_Helper_Data $helper */
         $helper = Mage::helper('puntopagos');
 
@@ -19,7 +21,7 @@ abstract class Androb_Puntopagos_Block_PaymentForm extends Mage_Payment_Block_Fo
 
         $isSandboxMode = $helper->isSandboxMode();
 
-        $sourceModel = Mage::getModel('puntopagos/' . $this->optionsSourceModel);
+        $sourceModel = Mage::getModel('puntopagos/' . $this->_optionSourceModel);
         $options = $sourceModel->toOptionArray();
 
         $result = array();
