@@ -62,8 +62,9 @@ class Androb_Puntopagos_Model_Notification {
                         $this->_getLogHelper()->logDebug('Saving order: ' . $orderId, $orderId);
 
                         //Create invoice for order
-                        //TODO Make configurable
-                        $this->createInvoice($order);
+                        if ($this->_getHelper()->isCreateInvoiceActive()) {
+                            $this->createInvoice($order);
+                        }
                    // }
                 } else {
                     $this->_getLogHelper()->logDebug('Failed transaction for token ' . $token . ', updating order: ' . $orderId, $orderId);
