@@ -15,7 +15,7 @@ This plugin is here because I had to do an integration between Magento and Punto
 
 ### Dependencies
 
-This extension require **pecl http extension** version 1.7 installed and enabled
+This extension requires the **pecl http extension** version 1.7 installed and enabled
 
 Here is a link for installation instructions on ubuntu:
 [Install pecl http extension on ubuntu 12.04 LTS](http://pmellor.wordpress.com/2013/05/13/adding-http-to-php-on-ubuntu-12-04-lts/)
