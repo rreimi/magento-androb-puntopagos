@@ -3,7 +3,7 @@
 ?>
 <?php
 
-/** @var $this Androb_Puntopagos_Block_Banktransfer_Form */
+/** @var $this Androb_Puntopagos_Block_Commercialcard_Form */
 /** @var $helper Androb_Puntopagos_Helper_Data */
 
 $_code = $this->getMethodCode();
@@ -15,13 +15,18 @@ $helper = Mage::helper('puntopagos');
     <ul class="payment-list form-list puntopagos-options-list commerialcard-list">
         <?php foreach ($options as $option): ?>
             <li>
-                <input type="radio" id="<?php echo $_code ?>_payment_option_<?php echo $option['value'] ?>" class="validate-one-required-by-name" name="payment[payment_option]" value="<?php echo $option['value'] ?>"/>
                 <label for="<?php echo $_code ?>_payment_option_<?php echo $option['value'] ?>">
-                    <?php //TODO make configurable echo $this->__($option['label']) ?>
+                    <input type="radio" id="<?php echo $_code ?>_payment_option_<?php echo $option['value'] ?>" class="validate-one-required-by-name" name="payment[payment_option]" value="<?php echo $option['value'] ?>"/>
+                    <?php //TODO make icons configurable configurable echo $this->__($option['label']) ?>
                     <img src="<?php echo $option['icon_url'] ?>" alt="<?php echo $this->__($option['label']) ?>" title="<?php echo $this->__($option['label']) ?>">
                 </label>
             </li>
         <?php endforeach ?>
+        <?php if (empty($options)): ?>
+            <li>
+                <?php echo $this->__('Sorry, here is no active options for this payment method') ?>
+            </li>
+        <?php endif ?>
     </ul>
 
     <?php if ($helper->isSandboxMode()): ?>

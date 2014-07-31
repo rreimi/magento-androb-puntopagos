@@ -13,7 +13,7 @@ abstract class Androb_Puntopagos_Block_PaymentForm extends Mage_Payment_Block_Fo
     /** @var $optionSourceModel String - The model name used to fetch the payment options */
     protected $_optionSourceModel;
 
-    protected function getAvailablePaymentOptions($code) {
+    public function getAvailablePaymentOptions($code) {
         /** @var Androb_Puntopagos_Helper_Data $helper */
         $helper = Mage::helper('puntopagos');
 
