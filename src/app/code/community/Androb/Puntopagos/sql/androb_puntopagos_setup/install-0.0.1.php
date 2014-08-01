@@ -3,33 +3,8 @@
 $installer = $this;
 $installer->startSetup();
 
-/*
-{"respuesta":"00","token":"9XJ08401WN0071839","trx_id":9787415132,"medio_pago":"999",
-"monto":1000000.00}
-/*
-
-{"respuesta":"00","token":"9XJ08401WN0071839","trx_id":9787415132,"medio_pago":"999","
-monto":1000000.00,"fecha":"2009-06-15T20:49:00","numero_operacion":"7897851487",
-"codigo_autorizacion":"34581"}
-
-
-{"respuesta":"99","token":"9XJ08401WN0071839","error":"Pago Rechazado"}
-
-
-token       //token de la transaccionc en punto pago not null
-trx_id      //id de la orden en magento   not null
-amount
-status  =  pending | rejected | completed
-medio_pago  null
-respojse
-codigo_autorizacion
-numero_operacion
-fecha
-
-
- */
 /**
- * Create table 'fl_prices_config'
+ * Create table 'puntopagos/transaction'
  */
 $table = $installer->getConnection()
 // The following call to getTable('foo_bar/baz') will lookup the resource for foo_bar (foo_bar_mysql4), and look

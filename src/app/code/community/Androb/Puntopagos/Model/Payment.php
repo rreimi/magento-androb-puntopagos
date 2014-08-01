@@ -1,11 +1,22 @@
 <?php
 /**
- * Created by Androb (www.androb.com).
- * User: rreimi
- * Date: 7/2/14
- * Time: 4:32 PM
- * 
- * PuntoPagos payment method implementation for magento
+ * Androb_Puntopagos Module
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * @category Androb
+ * @package Puntopagos
+ * @author Robert Reimi <robert.reimi@gmail.com>
+ * @copyright Androb (www.androb.com)
+ * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
 
 abstract class Androb_Puntopagos_Model_Payment extends Mage_Payment_Model_Method_Abstract {
@@ -30,7 +41,12 @@ abstract class Androb_Puntopagos_Model_Payment extends Mage_Payment_Model_Method
         return Mage::getSingleton('checkout/session');
     }
 
-    /** Override to use another value */
+    /**
+     * Override isAvailable method to check punto pagos configuration
+     *
+     * @param null $quote
+     * @return bool
+     */
     public function isAvailable($quote = null) {
 
         if (!$this->_getHelper()->isGatewayActive()) {
@@ -46,6 +62,14 @@ abstract class Androb_Puntopagos_Model_Payment extends Mage_Payment_Model_Method
         return parent::isAvailable();
     }
 
+    /**
+     * Initilizate new puntopagos transaction
+     * Puntopagos does not support authorize or capture so initilizate is the best place to handle this logic
+     *
+     * @param $paymentAction string payment action is not needed
+     * @param $stateObject
+     * @return $this
+     */
     public function initialize($paymentAction, $stateObject) {
         $this->_getLogHelper()->logDebug('Calling: ' .  __METHOD__);
         $this->_getLogHelper()->logDebug('Current payment code: ' . $this->_code);
@@ -63,7 +87,6 @@ abstract class Androb_Puntopagos_Model_Payment extends Mage_Payment_Model_Method
             Mage::throwException($e->getMessage());
         }
 
-        //Mage::throwException('could not init gateway');
         return $this;
     }
 
@@ -149,7 +172,11 @@ abstract class Androb_Puntopagos_Model_Payment extends Mage_Payment_Model_Method
         return $result;
     }
 
-
+    /**
+     * Return redirect url for current token
+     *
+     * @return string
+     */
     public function getOrderPlaceRedirectUrl() {
         $token = $this->getCheckout()->getData('pp_token');
         $orderId = $this->getCheckout()->getData('pp_order_id');

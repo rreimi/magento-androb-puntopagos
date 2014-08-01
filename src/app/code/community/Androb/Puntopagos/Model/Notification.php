@@ -1,11 +1,22 @@
 <?php
 /**
- * Created by Androb (www.androb.com).
- * User: rreimi
- * Date: 7/3/14
- * Time: 3:50 PM
- * 
- * Process incoming notifications
+ * Androb_Puntopagos Module
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * @category Androb
+ * @package Puntopagos
+ * @author Robert Reimi <robert.reimi@gmail.com>
+ * @copyright Androb (www.androb.com)
+ * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
 
 class Androb_Puntopagos_Model_Notification {
@@ -13,6 +24,13 @@ class Androb_Puntopagos_Model_Notification {
     const RESULT_STATUS_OK = '00';
     const RESULT_STATUS_ERROR = '99';
 
+    /**
+     * Process incoming transactions
+     * Update magento order accordingly
+     *
+     * @param $token        puntopagos transaction token
+     * @return stdClass
+     */
     public function processTransaction($token) {
 
         $this->_getLogHelper()->logDebug('Calling ' . __METHOD__);
@@ -104,6 +122,8 @@ class Androb_Puntopagos_Model_Notification {
     }
 
     /**
+     * Create invoice for given order
+     *
      * @param Mage_Sales_Model_Order $order
      */
     private function createInvoice($order) {
@@ -135,7 +155,7 @@ class Androb_Puntopagos_Model_Notification {
     }
 
     /**
-     * Update transaction with give response object
+     * Update transaction with using response object information
      *
      * @param $transaction
      * @param $apiResponse

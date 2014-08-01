@@ -1,12 +1,22 @@
 <?php
 /**
- * Created by Androb (www.androb.com).
- * User: rreimi
- * Date: 7/2/14
- * Time: 4:30 PM
- * 
- * Class to handle punto pagos rest api requests
+ * Androb_Puntopagos Module
  *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * @category Androb
+ * @package Puntopagos
+ * @author Robert Reimi <robert.reimi@gmail.com>
+ * @copyright Androb (www.androb.com)
+ * @license http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
 
 class Androb_Puntopagos_Model_Api {
@@ -30,6 +40,15 @@ class Androb_Puntopagos_Model_Api {
         $this->_getLogHelper()->logDebug('Using gateway url: ' . $this->gatewayUrl);
     }
 
+    /**
+     * Register a new transaction with puntopagos gateway
+     *
+     * @param $trxId string             transaction id (magento order increment id)
+     * @param $amount float             transaction amount
+     * @param $paymentMethod string     payment option
+     * @return object                   with transaction result
+     *
+     */
     public function createTransaction($trxId, $amount, $paymentMethod = null) {
         $this->_getLogHelper()->logDebug('Creating new transaction for order: ' . $trxId, $trxId);
 
@@ -67,11 +86,20 @@ class Androb_Puntopagos_Model_Api {
         return $result;
     }
 
+    /**
+     * Retrieve a transaction from puntopagos gateway
+     *
+     * @param $token    string     puntopagos transaction token
+     * @param $trxId    string     magento order incrementId
+     * @param $amount   float      transaction amount
+     * @return object   object with transaction result
+     */
     public function getTransaction($token, $trxId, $amount) {
 
         $this->_getLogHelper()->logDebug('Loading transaction for token: ' . $token, $trxId);
         $this->_getLogHelper()->logDebug('Using trxId (orderId): ' . $trxId . ', amount: ' . $amount);
 
+        /** Punto pagos does not accept decimals (chilean currency behavior) */
         $amount = round($amount);
 
         $operation = 'transaccion/traer';
@@ -95,11 +123,23 @@ class Androb_Puntopagos_Model_Api {
         return $result;
     }
 
+    /**
+     * Sign api message based on gateway rules
+     *
+     * @param $message
+     * @return string
+     */
     private function signMessage($message) {
         $signature = base64_encode(hash_hmac('sha1', $message, $this->keySecret, true));
         return "PP " . $this->keyId . ":" . $signature;
     }
 
+    /**
+     * Build request headers based on gateway format
+     *
+     * @param $message string message to be sent
+     * @return array
+     */
     private function getHeaders($message) {
         $date = gmdate("D, d M Y H:i:s", time())." GMT";
         $message .= "\n".$date;
@@ -114,6 +154,15 @@ class Androb_Puntopagos_Model_Api {
         return $headers;
     }
 
+    /**
+     * Sent new request to the the api
+     *
+     * @param $url          string web service url
+     * @param $method       string http method
+     * @param $headers      array headers
+     * @param $data         string request body
+     * @return string
+     */
     private function sendRequest($url, $method, $headers, $data = null) {
         try {
             $ssl_array = array('version' => HttpRequest::SSL_VERSION_SSLv3);
@@ -143,6 +192,12 @@ class Androb_Puntopagos_Model_Api {
         return Mage::helper('puntopagos');
     }
 
+    /**
+     * Format amount for api calls
+     *
+     * @param $amount
+     * @return string
+     */
     private function _formatAmount($amount) {
         return number_format($amount, 2, '.', '');
     }
@@ -157,6 +212,8 @@ class Androb_Puntopagos_Model_Api {
     }
 
     /**
+     * Load log helper
+     *
      * @return Androb_Puntopagos_Helper_Log
      */
     private function _getLogHelper() {
