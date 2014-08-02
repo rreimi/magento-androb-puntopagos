@@ -36,7 +36,7 @@ Soon :)
 
 ### MagentoConnect
 
-Soon :)
+[Download from magento connect](http://www.magentocommerce.com/magento-connect/catalog/product/view/id/24336/)
 
 ### Manual
 
