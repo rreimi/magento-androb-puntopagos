@@ -21,18 +21,14 @@ Here is a link for installation instructions on ubuntu:
 [Install pecl http extension on ubuntu 12.04 LTS](http://pmellor.wordpress.com/2013/05/13/adding-http-to-php-on-ubuntu-12-04-lts/)
 
 
-### Composer
+### Magento Composer Repository
 
-1. Add this repository url as a vcs repository to your composer.json
-2. Install using: composer require androb/puntopagos
+If you are using the magento composer repository just add the androb/puntopagos dependency:
 
 ```
 composer require androb/puntopagos
 ```
-
-### Firegento
-
-Soon :)
+More about magento composer repository [here](https://github.com/magento-hackathon/composer-repository)
 
 ### MagentoConnect
 
