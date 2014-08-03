@@ -69,7 +69,7 @@ class Androb_Puntopagos_Model_Notification {
 
                     //if ($order->getState() == Mage_Sales_Model_Order::STATE_PENDING_PAYMENT) { not necessary
                         //todo create invoice
-                        $msg = 'Pago completado usando punto pagos (' . $transaction->getData('payment_option_desc') . ')';
+                        $msg = 'Payment completed using puntopagos (' . $transaction->getData('payment_option_desc') . ')';
                         $order->addStatusHistoryComment($transaction->getData('response'), Mage_Sales_Model_Order::STATE_CANCELED);
 
                         $order->sendNewOrderEmail();

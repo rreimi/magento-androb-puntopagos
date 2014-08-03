@@ -78,7 +78,7 @@ class Androb_Puntopagos_Model_Api {
         $this->_getLogHelper()->logDebug('Using headers: ' . json_encode($headers));
         $this->_getLogHelper()->logDebug('Using data: ' . $data);
 
-        $result = $this->sendRequest($url, HTTP_METH_POST, $headers, $data);
+        $result = $this->sendRequest($url, Zend_Http_Client::POST, $headers, $data);
 
         $this->_getLogHelper()->logDebug('Loaded result: ' . $result, $trxId);
 
@@ -115,7 +115,7 @@ class Androb_Puntopagos_Model_Api {
         $this->_getLogHelper()->logDebug('Using headers: ' . json_encode($headers));
 
         //Send request to puntopagos
-        $result = $this->sendRequest($url, HTTP_METH_GET, $headers);
+        $result = $this->sendRequest($url, Zend_Http_Client::GET, $headers);
 
         $this->_getLogHelper()->logDebug('Loaded result: ' . $result, $trxId);
 
@@ -146,6 +146,7 @@ class Androb_Puntopagos_Model_Api {
 
         $headers = array(
             'Accept' => 'application/json',
+            'Content-type' => 'application/json',
             'Accept-Charset' => 'utf-8',
             'Fecha' => $date,
             'Autorizacion' => $this->signMessage($message)
@@ -165,17 +166,20 @@ class Androb_Puntopagos_Model_Api {
      */
     private function sendRequest($url, $method, $headers, $data = null) {
         try {
-            $ssl_array = array('version' => HttpRequest::SSL_VERSION_SSLv3);
-            $options = array('headers' => $headers,
-                'protocol' => HTTP_VERSION_1_1,
-                'ssl' => $ssl_array);
+            $client = new Varien_Http_Client();
+            $client->setUri($url)
+                ->setMethod($method)
+                ->setConfig(array(
+                    'maxredirects' => 0,
+                    'timeout' => 30,
+                ));
 
-            $request = new HttpRequest($url, $method, $options);
-            $request->setContentType("application/json; charset=utf-8");
+            $client->setHeaders($headers);
             if (isset($data)) {
-                $request->setRawPostData($data);
+                $client->setRawData($data);
             }
-            return $request->send()->getBody();
+
+            return $client->request()->getBody();
         } catch (HttpException $ex) {
             $this->_handleException($ex);
         } catch (Exception $e) {
